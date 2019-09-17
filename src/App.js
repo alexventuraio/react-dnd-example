@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-function App() {
+function App({ data }) {
   return (
     <div className="App">
       <h1>Hello World</h1>
