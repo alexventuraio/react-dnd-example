@@ -1,6 +1,7 @@
 import React from 'react';
+import Column from '../Column/Column';
+
 import './App.css';
-import Column from './components/Column/Column';
 
 function App({ data }) {
   return (
