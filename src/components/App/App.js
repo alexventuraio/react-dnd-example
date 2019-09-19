@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import BoardColumn from '../BoardColumn/BoardColumn';
 
@@ -24,7 +24,7 @@ class App extends Component {
         index: 1,
       },
     }; */
-    const { destination, source, draggableId } = result;
+    const { destination, source, draggableId, type } = result;
 
     if (!destination) return;
 
@@ -32,6 +32,21 @@ class App extends Component {
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
+      return;
+    }
+
+    // Reordering BoardColumn's position
+    if (type === 'column') {
+      const newColumnOrder = Array.from(this.state.columnOrder);
+      newColumnOrder.splice(source.index, 1);
+      newColumnOrder.splice(destination.index, 0, draggableId);
+
+      const newState = {
+        ...this.state,
+        columnOrder: newColumnOrder,
+      };
+
+      this.setState(newState);
       return;
     }
 
@@ -91,25 +106,38 @@ class App extends Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <Container fluid>
-          <h1 className="text-white font-weight-light">Kanban Board</h1>
-          <Row className="flex-nowrap scrollable">
-            {this.state.columnOrder.map((columnId, index) => {
-              const column = this.state.columns[columnId];
-              const tasks = column.taskIds.map(
-                taskId => this.state.tasks[taskId],
-              );
-              return (
-                <BoardColumn
-                  key={column.id}
-                  column={column}
-                  tasks={tasks}
-                  index={index}
-                />
-              );
-            })}
-          </Row>
-        </Container>
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {provided => (
+            <Container
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              fluid
+            >
+              <h1 className="text-white font-weight-light">Kanban Board</h1>
+              <Row className="flex-nowrap scrollable">
+                {this.state.columnOrder.map((columnId, index) => {
+                  const column = this.state.columns[columnId];
+                  const tasks = column.taskIds.map(
+                    taskId => this.state.tasks[taskId],
+                  );
+                  return (
+                    <BoardColumn
+                      key={column.id}
+                      column={column}
+                      tasks={tasks}
+                      index={index}
+                    />
+                  );
+                })}
+              </Row>
+              {provided.placeholder}
+            </Container>
+          )}
+        </Droppable>
       </DragDropContext>
     );
   }
