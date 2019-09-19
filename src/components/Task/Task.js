@@ -6,14 +6,21 @@ import { Draggable } from 'react-beautiful-dnd';
 import './Task.css';
 
 const Task = ({ task, index }) => {
+  /*draggableSnapshot = {
+    isDragging: true,
+    draggingOver: 'column-1',
+  };*/
+
   return (
     <Draggable draggableId={task.id} index={index}>
-      {provided => (
+      {(provided, snapshot) => (
         <Card
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="card shadow-sm rounded mb-2"
+          className="shadow-sm rounded mb-2"
+          bg={snapshot.isDragging ? 'light' : ''}
+          border={snapshot.isDragging ? 'secondary' : ''}
         >
           <Card.Body className="p-2">
             <Card.Title>

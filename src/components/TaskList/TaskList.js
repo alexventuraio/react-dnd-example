@@ -6,13 +6,20 @@ import Task from '../Task/Task';
 import './TaskList.css';
 
 const TaskList = ({ tasks, columnId }) => {
+  /*droppableSnapshot = {
+    isDraggingOver: true,
+    draggingOverWith: 'task-1',
+  };*/
+
   return (
     <Droppable droppableId={columnId}>
-      {provided => (
+      {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="px-3 task-list"
+          className={`px-3 task-list ${
+            snapshot.isDraggingOver ? 'bg-primary' : ''
+          }`}
         >
           {tasks.map((task, index) => (
             <Task key={task.id} task={task} index={index} />
