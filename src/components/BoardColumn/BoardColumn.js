@@ -4,9 +4,9 @@ import Card from 'react-bootstrap/Card';
 
 import TaskList from '../TaskList/TaskList';
 
-import './Column.css';
+import './BoardColumn.css';
 
-const Column = ({ column, tasks, index }) => {
+const BoardColumn = ({ column, tasks, index }) => {
   return (
     <Col className="column">
       <Card className="bg-light column-content">
@@ -21,4 +21,4 @@ const Column = ({ column, tasks, index }) => {
   );
 };
 
-export default Column;
+export default BoardColumn;

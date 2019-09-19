@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
-import Column from '../Column/Column';
+import BoardColumn from '../BoardColumn/BoardColumn';
 
 import './App.css';
 
@@ -14,7 +14,7 @@ function App({ data }) {
           const column = data.columns[columnId];
           const tasks = column.taskIds.map(taskId => data.tasks[taskId]);
           return (
-            <Column
+            <BoardColumn
               key={column.id}
               column={column}
               tasks={tasks}
