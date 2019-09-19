@@ -14,7 +14,7 @@ const BoardColumn = ({ column, tasks, index }) => {
           <h6 className="text-uppercase text-truncate pt-3 px-3">
             {column.title}
           </h6>
-          <TaskList key={index} tasks={tasks} />
+          <TaskList key={index} tasks={tasks} columnId={column.id} />
         </Card.Body>
       </Card>
     </Col>
