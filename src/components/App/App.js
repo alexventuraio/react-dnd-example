@@ -118,7 +118,7 @@ class App extends Component {
               fluid
             >
               <h1 className="text-white font-weight-light">Kanban Board</h1>
-              <Row className="flex-nowrap scrollable">
+              <Row className="flex-nowrap">
                 {this.state.columnOrder.map((columnId, index) => {
                   const column = this.state.columns[columnId];
                   const tasks = column.taskIds.map(

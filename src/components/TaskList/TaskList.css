@@ -1,5 +1,5 @@
 .task-list {
   height: calc(100vh - 135px);
   overflow-y: scroll;
-  transition: background-color 300ms ease;
+  transition: background-color 200ms ease;
 }

@@ -17,9 +17,9 @@ const TaskList = ({ tasks, columnId }) => {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className={`px-3 task-list ${
+          className={`px-3 ${
             snapshot.isDraggingOver ? 'bg-primary' : ''
-          }`}
+          } task-list`}
         >
           {tasks.map((task, index) => (
             <Task key={task.id} task={task} index={index} />
