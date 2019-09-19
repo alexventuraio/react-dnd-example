@@ -35,21 +35,53 @@ class App extends Component {
       return;
     }
 
-    const column = this.state.columns[source.droppableId];
-    const newTaskIds = Array.from(column.taskIds);
-    newTaskIds.splice(source.index, 1);
-    newTaskIds.splice(destination.index, 0, draggableId);
+    const startCol = this.state.columns[source.droppableId];
+    const finishCol = this.state.columns[destination.droppableId];
 
-    const newColumn = {
-      ...column,
-      taskIds: newTaskIds,
+    // Moving items within the same BoardColumn
+    if (startCol === finishCol) {
+      const newTaskIds = Array.from(startCol.taskIds);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, draggableId);
+
+      const newColumn = {
+        ...startCol,
+        taskIds: newTaskIds,
+      };
+
+      const newState = {
+        ...this.state,
+        columns: {
+          ...this.state.columns,
+          [newColumn.id]: newColumn,
+        },
+      };
+
+      this.setState(newState);
+      return;
+    }
+
+    // Moving from one BoardColumn to another
+    const startTaskIds = Array.from(startCol.taskIds);
+    startTaskIds.splice(source.index, 1);
+    const newStart = {
+      ...startCol,
+      taskIds: startTaskIds,
+    };
+
+    const finishTaskIds = Array.from(finishCol.taskIds);
+    finishTaskIds.splice(destination.index, 0, draggableId);
+    const newFinish = {
+      ...finishCol,
+      taskIds: finishTaskIds,
     };
 
     const newState = {
       ...this.state,
       columns: {
         ...this.state.columns,
-        [newColumn.id]: newColumn,
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish,
       },
     };
 
