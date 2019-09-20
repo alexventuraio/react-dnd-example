@@ -1,7 +1,6 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
-import { Draggable } from 'react-beautiful-dnd';
-
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import TaskList from '../TaskList/TaskList';
 
 import './BoardColumn.css';
@@ -9,7 +8,7 @@ import './BoardColumn.css';
 const BoardColumn = ({ column, tasks, index }) => {
   return (
     <Draggable draggableId={column.id} index={index}>
-      {(provided, snapshot) => (
+      {provided => (
         <Col
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -22,7 +21,20 @@ const BoardColumn = ({ column, tasks, index }) => {
             >
               {column.title}
             </h6>
-            <TaskList key={index} tasks={tasks} columnId={column.id} />
+            <Droppable droppableId={column.id} type="task">
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={`px-3 ${
+                    snapshot.isDraggingOver ? 'bg-primary' : ''
+                  } task-list`}
+                >
+                  <TaskList tasks={tasks} />
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </div>
         </Col>
       )}
