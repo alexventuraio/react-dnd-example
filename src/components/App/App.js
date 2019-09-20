@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
@@ -120,14 +120,12 @@ class App extends Component {
               <Row className="flex-nowrap">
                 {this.state.columnOrder.map((columnId, index) => {
                   const column = this.state.columns[columnId];
-                  const tasks = column.taskIds.map(
-                    taskId => this.state.tasks[taskId],
-                  );
+
                   return (
-                    <BoardColumn
+                    <InnerList
                       key={column.id}
                       column={column}
-                      tasks={tasks}
+                      taskMap={this.state.tasks}
                       index={index}
                     />
                   );
@@ -139,6 +137,14 @@ class App extends Component {
         </Droppable>
       </DragDropContext>
     );
+  }
+}
+
+class InnerList extends PureComponent {
+  render() {
+    const { column, taskMap, index } = this.props;
+    const tasks = column.taskIds.map(taskId => taskMap[taskId]);
+    return <BoardColumn column={column} tasks={tasks} index={index} />;
   }
 }
 
